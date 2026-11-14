@@ -1,0 +1,118 @@
+{
+  "id": "airtable-inventory-report",
+  "title": "Airtable Inventory Report",
+  "prompt": "Review the selected warehouse inventory rows against their reorder points. List items at or below the threshold and total units in the returned page.",
+  "instructions": "Read only the specified base/table and bounded page. Use the exact filter formula and report that the result is a sample, not the full inventory ledger. Do not edit quantities, create records, or infer supplier lead times. Keep quantity and reorder threshold visible for each flagged item.",
+  "fixture_summary": "Synthetic Warehouse A inventory sample has five products; two are at or below their reorder points.",
+  "inputs": {
+    "base": "sample-warehouse-base",
+    "table": "Inventory",
+    "filter_by_formula": "{Stock Zone} = 'Warehouse A'",
+    "max_records": 5
+  },
+  "steps": [
+    {
+      "id": "read_warehouse_inventory",
+      "alias": "inventory",
+      "integration": "airtable",
+      "action": "list_records",
+      "tool": "inventory__list_records",
+      "arguments": {
+        "base": "sample-warehouse-base",
+        "table": "Inventory",
+        "filter_by_formula": "{Stock Zone} = 'Warehouse A'",
+        "max_records": 5
+      },
+      "records": [
+        {
+          "id": "air-row-1",
+          "app": "Airtable",
+          "title": "USB-C dock",
+          "detail": "Synthetic stock row: 4 units on hand; reorder point 5.",
+          "url": "https://example.com/records/air-row-1",
+          "record_id": "air-row-1",
+          "sku": "DOCK-02",
+          "quantity": 4,
+          "reorder_point": 5,
+          "below_reorder": true,
+          "stock_zone": "Warehouse A"
+        },
+        {
+          "id": "air-row-2",
+          "app": "Airtable",
+          "title": "Laptop stand",
+          "detail": "Synthetic stock row: 18 units on hand; reorder point 8.",
+          "url": "https://example.com/records/air-row-2",
+          "record_id": "air-row-2",
+          "sku": "STAND-01",
+          "quantity": 18,
+          "reorder_point": 8,
+          "below_reorder": false,
+          "stock_zone": "Warehouse A"
+        },
+        {
+          "id": "air-row-3",
+          "app": "Airtable",
+          "title": "Webcam cover",
+          "detail": "Synthetic stock row: 6 units on hand; reorder point 6.",
+          "url": "https://example.com/records/air-row-3",
+          "record_id": "air-row-3",
+          "sku": "CAM-03",
+          "quantity": 6,
+          "reorder_point": 6,
+          "below_reorder": true,
+          "stock_zone": "Warehouse A"
+        },
+        {
+          "id": "air-row-4",
+          "app": "Airtable",
+          "title": "Keyboard kit",
+          "detail": "Synthetic stock row: 12 units on hand; reorder point 7.",
+          "url": "https://example.com/records/air-row-4",
+          "record_id": "air-row-4",
+          "sku": "KEY-04",
+          "quantity": 12,
+          "reorder_point": 7,
+          "below_reorder": false,
+          "stock_zone": "Warehouse A"
+        },
+        {
+          "id": "air-row-5",
+          "app": "Airtable",
+          "title": "Cable bundle",
+          "detail": "Synthetic stock row: 25 units on hand; reorder point 10.",
+          "url": "https://example.com/records/air-row-5",
+          "record_id": "air-row-5",
+          "sku": "CBL-05",
+          "quantity": 25,
+          "reorder_point": 10,
+          "below_reorder": false,
+          "stock_zone": "Warehouse A"
+        }
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "name": "sampled_products",
+      "op": "count"
+    },
+    {
+      "name": "items_at_or_below_reorder_point",
+      "op": "count",
+      "where": {
+        "below_reorder": true
+      }
+    },
+    {
+      "name": "sample_units_on_hand",
+      "op": "sum",
+      "field": "quantity"
+    }
+  ],
+  "expected_metrics": {
+    "sampled_products": 5,
+    "items_at_or_below_reorder_point": 2,
+    "sample_units_on_hand": 65
+  }
+}
