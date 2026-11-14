@@ -1,4 +1,14 @@
-# Airtable Inventory Report
+# Airtable MCP agent with PydanticAI: Airtable Inventory Report
+
+<!-- weavz:discovery:start -->
+
+Use Airtable with PydanticAI through Weavz MCP. This airtable inventory report example returns a report from bounded app reads with source references.
+
+**Framework:** PydanticAI · **Language:** Python · **MCP modes:** Tool Mode and Code Mode
+
+[MCP app and framework directory](https://github.com/weavz/mcp-examples/blob/main/docs/integrations.md) · [All examples](https://github.com/weavz/mcp-examples) · [Weavz MCP guide](https://weavz.io/docs/guides/agent-framework-examples)
+
+<!-- weavz:discovery:end -->
 
 Review the selected warehouse inventory rows against their reorder points. List items at or below the threshold and total units in the returned page.
 
